@@ -13,6 +13,7 @@ class AccountsService {
             email: payload.email,
             address: payload.address,
             phone: payload.phone,
+            role: payload.role
         };
         // Remove undefined fields
         Object.keys(account).forEach(

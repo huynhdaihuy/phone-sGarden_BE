@@ -31,7 +31,7 @@ exports.findOne = async(req, res, next) => {
 
 exports.findAll = async(req, res, next) => {
     let documents = [];
-    const { keyword, brand, ram, os, priceAbove, priceBelow, type } = req.query;
+    const { keyword, brand, ram, os, priceAbove, priceBelow, type, sort } = req.query;
     try {
         const productService = new ProductService(MongoDB.client);
         if (keyword) {
@@ -41,6 +41,8 @@ exports.findAll = async(req, res, next) => {
             documents = await productService.findByPriceAboveType(priceAbove, type);
         } else if (priceBelow && type) {
             documents = await productService.findByPriceBelowType(priceAbove, type);
+        } else if (type, brand) {
+            documents = await productService.findByTypeBrand({ type, brand });
         } else if (type) {
             documents = await productService.find({ type });
         } else if (priceAbove && priceBelow) {

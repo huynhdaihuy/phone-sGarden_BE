@@ -115,6 +115,18 @@ class ProductService {
     async findById(id) {
         return await this.Product.findOne({ _id: ObjectId.isValid(id) ? new ObjectId(id) : null });
     }
+    async findByTypeBrand(filter) {
+        console.log("🚀 ~ file: product.service.js:119 ~ ProductService ~ findByTypeBrand ~ filter", filter)
+        return await this.find({
+            $and: [{
+                    brand: { $regex: filter.brand, $options: 'i' }
+                },
+                {
+                    type: { $regex: filter.type, $options: 'i' }
+                },
+            ]
+        });
+    }
     async findByBrandRam(cond) {
         const ram = Number(cond.ram);
         return await this.find({
