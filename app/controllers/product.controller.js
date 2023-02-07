@@ -41,7 +41,7 @@ exports.findAll = async(req, res, next) => {
             documents = await productService.findByPriceAboveType(priceAbove, type);
         } else if (priceBelow && type) {
             documents = await productService.findByPriceBelowType(priceAbove, type);
-        } else if (type, brand) {
+        } else if (type && brand) {
             documents = await productService.findByTypeBrand({ type, brand });
         } else if (type) {
             documents = await productService.find({ type });
@@ -63,6 +63,8 @@ exports.findAll = async(req, res, next) => {
             documents = await productService.find({ os });
         } else
             documents = await productService.find({});
+
+
     } catch (error) {
         return next(new ApiError(500, 'An error occurred while retrieving the products'))
 
