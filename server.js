@@ -24,8 +24,8 @@ db.mongoose
     });
 
 async function initial() {
-    await MongoDB.connect('mongodb://localhost:27017/phone_Garden');
-    console.log("Connected to the database!");
+    // await MongoDB.connect('mongodb://localhost:27017/phone_Garden');
+    // console.log("Connected to the database!");
     Role.estimatedDocumentCount((err, count) => {
         if (!err && count === 0) {
             new Role({

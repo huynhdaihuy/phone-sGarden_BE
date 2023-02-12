@@ -33,7 +33,7 @@ const addCart = asyncHandler(async(req, res) => {
         let newCart = await new Cart({
             products,
             cartTotal,
-            orderby: user._id,
+            orderBy: user._id,
         }).save();
         res.json(newCart);
     } catch (error) {
@@ -42,11 +42,13 @@ const addCart = asyncHandler(async(req, res) => {
 });
 
 const getUserCart = asyncHandler(async(req, res) => {
-    const { _id } = req.user;
+    const { _id } = req.body.user;
+    console.log("🚀 ~ file: cart.controller.js:46 ~ getUserCart ~ _id", _id)
     try {
         const cart = await Cart.findOne({ orderBy: _id }).populate(
             "products.product"
         );
+        console.log("🚀 ~ file: cart.controller.js:52 ~ getUserCart ~ cart", cart)
         res.json(cart);
     } catch (error) {
         throw new Error(error);
@@ -54,7 +56,7 @@ const getUserCart = asyncHandler(async(req, res) => {
 });
 
 const emptyCart = asyncHandler(async(req, res) => {
-    const { _id } = req.user;
+    const { _id } = req.body.user;
     try {
         const user = await User.findOne({ _id });
         const cart = await Cart.findOneAndRemove({ orderBy: user._id });

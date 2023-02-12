@@ -4,7 +4,6 @@ const cors = require("cors");
 const ApiError = require('./app/api-error');
 const app = express();
 const productRouter = require('./app/routes/product.route');
-const accountRouter = require('./app/routes/account.route');
 const newsRouter = require('./app/routes/news.route');
 const authRouter = require('./app/routes/auth.routes');
 const userRouter = require('./app/routes/user.routes');
@@ -37,7 +36,6 @@ app.use('/api/test', (req, res, next) => {
 app.use('/api/auth', authRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/products', productRouter);
-app.use('/api/users', accountRouter);
 app.use('/api/news', newsRouter);
 
 app.use((req, res, next) => {
