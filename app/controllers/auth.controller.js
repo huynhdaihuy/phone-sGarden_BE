@@ -10,7 +10,9 @@ exports.signup = (req, res) => {
     const user = new User({
         username: req.body.username,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8)
+        password: bcrypt.hashSync(req.body.password, 8),
+        phone: req.body.phone,
+        address: req.body.address
     });
 
     user.save((err, user) => {
@@ -35,7 +37,6 @@ exports.signup = (req, res) => {
                             res.status(500).send({ message: err });
                             return;
                         }
-
                         res.send({ message: "User was registered successfully!" });
                     });
                 }

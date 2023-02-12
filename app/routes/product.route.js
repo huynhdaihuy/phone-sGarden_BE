@@ -1,18 +1,21 @@
-const express = require('express');
-const products = require('../controllers/product.controller');
+const express = require("express");
+const {
+    createProduct,
+    getaProduct,
+    getAllProduct,
+    updateProduct,
+    deleteProduct,
+} = require("../controllers/product.controller");
 
 const router = express.Router();
 
-// Query for filter
+router.post("/", createProduct);
 
-router.route("/")
-    .get(products.findAll)
-    .post(products.create)
-    .delete(products.deleteAll);
+router.get("/:id", getaProduct);
 
-router.route('/:id')
-    .get(products.findOne)
-    .put(products.update)
-    .delete(products.delete);
+router.put("/:id", updateProduct);
+router.delete("/:id", deleteProduct);
+
+router.get("/", getAllProduct);
 
 module.exports = router;
