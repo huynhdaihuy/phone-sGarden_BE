@@ -14,7 +14,6 @@ exports.signup = (req, res) => {
         phone: req.body.phone,
         address: req.body.address
     });
-
     user.save((err, user) => {
         if (err) {
             res.status(500).send({ message: err });
@@ -54,7 +53,6 @@ exports.signup = (req, res) => {
                         res.status(500).send({ message: err });
                         return;
                     }
-
                     res.send({ message: "User was registered successfully!" });
                 });
             });
@@ -63,6 +61,7 @@ exports.signup = (req, res) => {
 };
 
 exports.signin = (req, res) => {
+
     User.findOne({
             username: req.body.username
         })
@@ -102,6 +101,7 @@ exports.signin = (req, res) => {
                 id: user._id,
                 username: user.username,
                 email: user.email,
+                address: user.address,
                 roles: authorities,
                 accessToken: token
             });

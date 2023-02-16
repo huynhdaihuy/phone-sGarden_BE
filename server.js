@@ -1,6 +1,5 @@
 const app = require("./app");
 const config = require("./app/config");
-const MongoDB = require('./app/utils/mongodb.util');
 
 const db = require("./app/models");
 const Role = db.role;
@@ -34,7 +33,6 @@ async function initial() {
                 if (err) {
                     console.log("error", err);
                 }
-
                 console.log("added 'user' to roles collection");
             });
 
@@ -54,7 +52,6 @@ async function initial() {
                 if (err) {
                     console.log("error", err);
                 }
-
                 console.log("added 'admin' to roles collection");
             });
         }
