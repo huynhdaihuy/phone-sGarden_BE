@@ -20,7 +20,6 @@ const uploadImages = asyncHandler(async(req, res) => {
             }
         } else {
             const path = files.images.tempFilePath;
-            console.log("🚀 ~ file: upload.controller.js:23 ~ uploadImages ~ path", path)
             const newpath = await uploader(path);
             console.log(newpath);
             urls.push(newpath);
