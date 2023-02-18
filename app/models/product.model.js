@@ -39,7 +39,11 @@ const Product = mongoose.model(
             trim: true,
         },
         memory: Number,
-        madeIn: String,
+        camFront: Number,
+        camBack: Number,
+        series: String,
+        pin: Number,
+
     }, { timestamps: true })
 );
 

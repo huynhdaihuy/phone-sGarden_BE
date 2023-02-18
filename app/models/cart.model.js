@@ -8,7 +8,7 @@ const Cart = new mongoose.model("Cart", mongoose.Schema({
         },
         count: Number,
         price: Number,
-    }, ],
+    }],
     cartTotal: Number,
     orderBy: {
         type: mongoose.Schema.Types.ObjectId,
