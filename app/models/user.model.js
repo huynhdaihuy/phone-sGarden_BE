@@ -24,8 +24,6 @@ const User = mongoose.model(
         },
         address: {
             type: String,
-            required: true,
-            unique: true,
         },
         password: String,
         roles: [{

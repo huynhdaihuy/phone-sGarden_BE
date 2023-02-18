@@ -50,7 +50,7 @@ app.use('/api/test', (req, res, next) => {
 }, userRouter);
 
 app.use('/api/upload', uploadRouter);
-
+app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/products', productRouter);

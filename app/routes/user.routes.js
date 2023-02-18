@@ -3,6 +3,12 @@ const controller = require("../controllers/user.controller");
 const express = require('express');
 const router = express.Router();
 
+router.get("/", controller.getAllUser);
+
+router.route('/:id')
+    .get(controller.findOne)
+    .put(controller.update)
+    .delete(controller.delete);
 
 router.get("/all", controller.allAccess);
 
