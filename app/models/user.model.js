@@ -22,10 +22,11 @@ const User = mongoose.model(
             required: true,
             unique: true,
         },
-        address: {
+        password: {
             type: String,
+            required: true,
         },
-        password: String,
+        address: String,
         roles: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Role"

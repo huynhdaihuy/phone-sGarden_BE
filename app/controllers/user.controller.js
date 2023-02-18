@@ -41,7 +41,6 @@ exports.findOne = asyncHandler(async(req, res) => {
 });
 
 exports.update = asyncHandler(async(req, res) => {
-    console.log("🚀 ~ file: user.controller.js:45 ~ exports.update=asyncHandler ~ req.body", req.body)
     if (!ObjectId.isValid(req.params.id))
         res.send("Invalid Id!");
     else

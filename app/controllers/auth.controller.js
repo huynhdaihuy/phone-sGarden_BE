@@ -20,7 +20,6 @@ exports.signup = (req, res) => {
             res.status(500).send({ message: err });
             return;
         }
-
         if (req.body.roles) {
             Role.find({
                     name: { $in: req.body.roles }
