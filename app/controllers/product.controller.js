@@ -53,6 +53,10 @@ const getAllProduct = asyncHandler(async(req, res) => {
         excludeFields.forEach((el) => delete queryObj[el]);
         let queryStr = JSON.stringify(queryObj);
         queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+        queryStr = queryStr.replace(/\b(regex)\b/g, (match) => {
+            return `$${match}`
+        })
+        console.log("🚀 ~ file: product.controller.js:58 ~ getAllProduct ~ queryStr", queryStr)
         let query = Product.find(JSON.parse(queryStr));
 
         if (req.query.sort) {

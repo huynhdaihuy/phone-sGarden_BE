@@ -39,8 +39,8 @@ const Product = mongoose.model(
             trim: true,
         },
         memory: Number,
-        camFront: Number,
-        camBack: Number,
+        camFront: String,
+        camBack: String,
         series: String,
         pin: Number,
 
