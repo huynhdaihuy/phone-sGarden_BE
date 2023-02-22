@@ -8,8 +8,7 @@ const Product = db.product;
 
 
 const addCart = asyncHandler(async(req, res) => {
-    const { cart } = req.body;
-    const { _id } = req.body.user;
+    const { _id, cart } = req.body;
     try {
         let products = [];
         const user = await User.findById(_id);

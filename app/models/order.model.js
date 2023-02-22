@@ -8,7 +8,7 @@ const Order = mongoose.model("Order", new mongoose.Schema({
             ref: "Product",
         },
         count: Number,
-        color: String,
+        price: String,
     }, ],
     paymentIntent: {},
     orderStatus: {

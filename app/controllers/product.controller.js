@@ -56,7 +56,6 @@ const getAllProduct = asyncHandler(async(req, res) => {
         queryStr = queryStr.replace(/\b(regex)\b/g, (match) => {
             return `$${match}`
         })
-        console.log("🚀 ~ file: product.controller.js:58 ~ getAllProduct ~ queryStr", queryStr)
         let query = Product.find(JSON.parse(queryStr));
 
         if (req.query.sort) {
@@ -73,10 +72,10 @@ const getAllProduct = asyncHandler(async(req, res) => {
         } else {
             query = query.select("-__v");
         }
-        const page = req.query.page;
-        const limit = req.query.limit;
+        const page = Number(req.query.page);
+        const limit = Number(req.query.limit);
         const skip = (page - 1) * limit;
-        query = query.skip(skip).limit(limit);
+        query = query.skip(0).limit(2);
         if (req.query.page) {
             const productCount = await Product.countDocuments();
             if (skip >= productCount) throw new Error("This Page does not exists");
