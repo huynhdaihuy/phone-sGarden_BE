@@ -5,12 +5,13 @@ const {
     emptyCart,
 } = require("../controllers/cart.controller");
 
+const { verifyToken } = require("../middleware/authJwt")
 const router = express.Router();
 
-router.post("/", addCart);
+router.post("/", verifyToken, addCart);
 
 router.get("/:id", getUserCart);
 
-router.delete("/:id", emptyCart);
+router.delete("/:id", verifyToken, emptyCart);
 
 module.exports = router;
