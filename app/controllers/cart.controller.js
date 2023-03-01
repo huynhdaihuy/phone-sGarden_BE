@@ -50,7 +50,6 @@ const getUserCart = asyncHandler(async(req, res) => {
         const cart = await Cart.findOne({ orderBy: id }).populate(
             "products.product"
         );
-        console.log("🚀 ~ file: cart.controller.js:52 ~ getUserCart ~ cart", cart)
         res.json(cart);
     } catch (error) {
         throw new Error(error);
