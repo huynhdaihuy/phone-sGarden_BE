@@ -12,13 +12,12 @@ const Order = db.order;
 
 
 const createOrder = asyncHandler(async(req, res) => {
-    const { _id, method } = req.body;
+    const { _id, method, destination, phone, note } = req.body;
     if (!ObjectId.isValid(_id)) throw new Error("Invalid id!");
     try {
         if (!method) throw new Error("Create cash order failed");
         const user = await User.findById(_id);
         let userCart = await Cart.findOne({ orderBy: _id });
-        console.log("🚀 ~ file: order.controller.js:21 ~ createOrder ~ userCart:", userCart)
         let finalAmout = 0;
         finalAmout = userCart.cartTotal;
         let newOrder = await new Order({
@@ -30,6 +29,9 @@ const createOrder = asyncHandler(async(req, res) => {
                 status: "Cash on Delivery",
                 created: Date.now(),
                 currency: "vnd",
+                destination,
+                phone,
+                note
             },
             orderBy: user._id,
             orderStatus: "Cash on Delivery",
