@@ -99,9 +99,7 @@ const updateOrderStatus = asyncHandler(async(req, res) => {
         const updateOrderStatus = await Order.findByIdAndUpdate(
             id, {
                 orderStatus: status,
-                paymentIntent: {
-                    status: status,
-                },
+                "paymentIntent.status": status,
             }, { new: true }
         );
         res.json(updateOrderStatus);
