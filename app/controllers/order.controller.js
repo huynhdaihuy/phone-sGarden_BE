@@ -12,7 +12,7 @@ const Order = db.order;
 
 
 const createOrder = asyncHandler(async(req, res) => {
-    const { _id, method, destination, phone, note, status } = req.body;
+    const { _id, method, destination, phone, note } = req.body;
     if (!ObjectId.isValid(_id)) throw new Error("Invalid id!");
     try {
         if (!method) throw new Error("Create cash order failed");
@@ -26,7 +26,7 @@ const createOrder = asyncHandler(async(req, res) => {
                 id: uniqid(),
                 method: method,
                 amount: finalAmout,
-                status,
+                status: "Processing",
                 created: Date.now(),
                 currency: "vnd",
                 destination,
@@ -34,7 +34,7 @@ const createOrder = asyncHandler(async(req, res) => {
                 note
             },
             orderBy: user._id,
-            orderStatus: status,
+            orderStatus: "Processing",
         }).save();
         let update = userCart.products.map((item) => {
             return {
