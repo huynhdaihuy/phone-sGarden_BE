@@ -10,7 +10,6 @@ const Product = db.product;
 
 const addCart = asyncHandler(async(req, res) => {
     const { _id, cart } = req.body;
-    console.log("🚀 ~ file: cart.controller.js:12 ~ addCart ~ cart:", cart)
     try {
         let products = [];
         const user = await User.findById(_id);

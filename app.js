@@ -5,6 +5,7 @@ require('dotenv').config()
 const mongoose = require("mongoose")
 const ApiError = require('./app/api-error');
 const app = express();
+
 const productRouter = require('./app/routes/product.route');
 const newsRouter = require('./app/routes/news.route');
 const authRouter = require('./app/routes/auth.routes');
@@ -12,6 +13,8 @@ const userRouter = require('./app/routes/user.routes');
 const cartRouter = require('./app/routes/cart.route');
 const orderRouter = require('./app/routes/order.route');
 const uploadRouter = require('./app/routes/upload.route');
+const couponRouter = require('./app/routes/coupon.route');
+
 
 
 const fileUpload = require('express-fileupload');
@@ -49,6 +52,7 @@ app.use('/api/test', (req, res, next) => {
 }, userRouter);
 
 app.use('/api/upload', uploadRouter);
+app.use('/api/coupon', couponRouter);
 app.use('/api/user', userRouter);
 app.use('/api/order', orderRouter);
 app.use('/api/auth', authRouter);

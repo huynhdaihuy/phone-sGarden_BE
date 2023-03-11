@@ -16,7 +16,6 @@ const createOrder = asyncHandler(async(req, res) => {
     if (!ObjectId.isValid(_id)) throw new Error("Invalid id!");
     try {
         if (!method) throw new Error("Create cash order failed");
-        const user = await User.findById(_id);
         let userCart = await Cart.findOne({ orderBy: _id });
         let finalAmout = 0;
         finalAmout = userCart.cartTotal;
@@ -33,7 +32,7 @@ const createOrder = asyncHandler(async(req, res) => {
                 phone,
                 note
             },
-            orderBy: user._id,
+            orderBy: _id,
             orderStatus: "Processing",
         }).save();
         let update = userCart.products.map((item) => {
