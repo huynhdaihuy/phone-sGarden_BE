@@ -1,6 +1,5 @@
-const mongoose = require("mongoose"); // Erase if already required
+const mongoose = require("mongoose");
 
-// Declare the Schema of the Mongo model
 const Order = mongoose.model("Order", new mongoose.Schema({
     products: [{
         product: {

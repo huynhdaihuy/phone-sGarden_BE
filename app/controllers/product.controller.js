@@ -15,7 +15,6 @@ const createProduct = asyncHandler(async(req, res) => {
 
 const updateProduct = asyncHandler(async(req, res) => {
     const id = req.params;
-
     try {
         const updateProduct = await Product.findOneAndUpdate({ id }, req.body, {
             new: true,
@@ -51,11 +50,16 @@ const getAllProduct = asyncHandler(async(req, res) => {
         const queryObj = {...req.query };
         const excludeFields = ["page", "sort", "limit", "fields"];
         excludeFields.forEach((el) => delete queryObj[el]);
+        if (req.query.isOnSale) {
+            queryObj["sale.isOnSale"] = true;
+            delete queryObj["isOnSale"];
+        }
         let queryStr = JSON.stringify(queryObj);
         queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
         queryStr = queryStr.replace(/\b(regex)\b/g, (match) => {
             return `$${match}`
         })
+        console.log("🚀 ~ file: product.controller.js:62 ~ getAllProduct ~ JSON.parse(queryStr):", JSON.parse(queryStr))
         let query = Product.find(JSON.parse(queryStr));
 
         if (req.query.sort) {
@@ -64,8 +68,6 @@ const getAllProduct = asyncHandler(async(req, res) => {
         } else {
             query = query.sort("-createdAt");
         }
-
-
         if (req.query.fields) {
             const fields = req.query.fields.split(",").join(" ");
             query = query.select(fields);
@@ -75,7 +77,7 @@ const getAllProduct = asyncHandler(async(req, res) => {
         const page = Number(req.query.page);
         const limit = Number(req.query.limit);
         const skip = (page - 1) * limit;
-        query = query.skip(0).limit(2);
+        query = query.skip(skip).limit(limit);
         if (req.query.page) {
             const productCount = await Product.countDocuments();
             if (skip >= productCount) throw new Error("This Page does not exists");
@@ -86,7 +88,6 @@ const getAllProduct = asyncHandler(async(req, res) => {
         throw new Error(error);
     }
 });
-
 
 module.exports = {
     createProduct,
