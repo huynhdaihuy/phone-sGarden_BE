@@ -126,6 +126,7 @@ exports.applyCoupon = async(req, res) => {
         }
         coupon.quantity -= 1;
         cart.cartTotal -= discount;
+        cart.isUsedCoupon = true;
         await cart.save();
         await coupon.save();
         res.status(200).send({ message: 'Coupon applied successfully.', discount });
