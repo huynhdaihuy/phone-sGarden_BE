@@ -7,8 +7,9 @@ const {
 
 const { verifyToken } = require("../middleware/authJwt")
 const router = express.Router();
-// verifyToken
-router.post("/", addCart);
+
+
+router.post("/", verifyToken, addCart);
 
 router.get("/:id", getUserCart);
 
