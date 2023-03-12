@@ -44,10 +44,8 @@ exports.getCoupons = async(req, res) => {
 
 exports.getCouponByCode = async(req, res) => {
     try {
-        const { code } = req.query;
-
-        const coupon = await Coupon.find(code);
-
+        const { code } = req.body;
+        const coupon = await Coupon.findOne({ code: code.toUpperCase() });
         if (!coupon) {
             return res.status(404).send({ message: 'Coupon not found.' });
         }
