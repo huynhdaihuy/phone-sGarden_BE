@@ -48,9 +48,7 @@ const getUserCart = asyncHandler(async(req, res) => {
     const id = req.params.id;
     if (!ObjectId.isValid(id)) throw new Error("Invalid id!");
     try {
-        const cart = await Cart.findOne({ orderBy: id }).populate(
-            "products.product"
-        );
+        const cart = await Cart.findOne({ orderBy: id }).populate("products.product").populate("isUsedCoupon.couponTnfo");
         res.json(cart);
     } catch (error) {
         throw new Error(error);

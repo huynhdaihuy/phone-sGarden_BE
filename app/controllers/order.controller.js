@@ -1,7 +1,6 @@
 const db = require("../models");
 const asyncHandler = require("express-async-handler");
 const { ObjectId } = require("mongodb");
-var uniqid = require('uniqid');
 
 const Cart = db.cart;
 const User = db.user;
@@ -22,7 +21,6 @@ const createOrder = asyncHandler(async(req, res) => {
         let newOrder = await new Order({
             products: userCart.products,
             paymentIntent: {
-                id: uniqid(),
                 method: method,
                 amount: finalAmout,
                 status: "Processing",
@@ -62,6 +60,7 @@ const getOdrerByID = asyncHandler(async(req, res) => {
         const userorders = await Order.findOne({ _id: id })
             .populate("products.product")
             .populate("orderBy")
+            .populate("paymentIntent.couponUsed")
             .exec();
         res.json(userorders);
     } catch (error) {
