@@ -69,8 +69,20 @@ const emptyCart = asyncHandler(async(req, res) => {
     }
 });
 
+const updateCart = asyncHandler(async(req, res) => {
+    const id = req.params;
+    try {
+        const updateCart = await Cart.findOneAndUpdate({ id }, req.body, {
+            new: true,
+        });
+        res.json(updateCart);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
 module.exports = {
     addCart,
     getUserCart,
-    emptyCart
+    emptyCart,
+    updateCart
 }
