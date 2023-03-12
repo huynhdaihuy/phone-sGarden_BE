@@ -59,7 +59,6 @@ const getAllProduct = asyncHandler(async(req, res) => {
         queryStr = queryStr.replace(/\b(regex)\b/g, (match) => {
             return `$${match}`
         })
-        console.log("🚀 ~ file: product.controller.js:62 ~ getAllProduct ~ JSON.parse(queryStr):", JSON.parse(queryStr))
         let query = Product.find(JSON.parse(queryStr));
 
         if (req.query.sort) {

@@ -21,10 +21,9 @@ const addCart = asyncHandler(async(req, res) => {
         for (let i = 0; i < cart.length; i++) {
             let object = {};
             object.product = cart[i]._id;
-            console.log("🚀 ~ file: cart.controller.js:24 ~ addCart ~ cart[i]._id:", cart[i]._id)
             object.count = cart[i].count;
-            let getPrice = await Product.findById(cart[i]._id).select("price").exec();
-            object.price = getPrice.price;
+            let product = await Product.findById(cart[i]._id);
+            product.sale.isOnSale ? object.price = product.price - (product.sale.salePercentage / 100 * product.price) : object.price = product.price
             products.push(object);
         }
         let cartTotal = 0;
