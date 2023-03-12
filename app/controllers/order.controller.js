@@ -12,11 +12,11 @@ const Order = db.order;
 
 
 const createOrder = asyncHandler(async(req, res) => {
-    const { _id, method, destination, phone, note } = req.body;
-    if (!ObjectId.isValid(_id)) throw new Error("Invalid id!");
+    const { idUser, method, destination, phone, note } = req.body;
+    if (!ObjectId.isValid(idUser)) throw new Error("Invalid id!");
     try {
         if (!method) throw new Error("Create cash order failed");
-        let userCart = await Cart.findOne({ orderBy: _id });
+        let userCart = await Cart.findOne({ orderBy: idUser }).populate("isUsedCoupon.couponTnfo");
         let finalAmout = 0;
         finalAmout = userCart.cartTotal;
         let newOrder = await new Order({
@@ -30,11 +30,14 @@ const createOrder = asyncHandler(async(req, res) => {
                 currency: "vnd",
                 destination,
                 phone,
-                note
+                note,
+                couponUsed: userCart.isUsedCoupon.couponTnfo
             },
-            orderBy: _id,
+            orderBy: idUser,
             orderStatus: "Processing",
         }).save();
+        console.log("🚀 ~ file: order.controller.js:39 ~ createOrder ~ newOrder:", newOrder)
+
         let update = userCart.products.map((item) => {
             return {
                 updateOne: {
@@ -43,8 +46,9 @@ const createOrder = asyncHandler(async(req, res) => {
                 },
             };
         });
+
         const updated = await Product.bulkWrite(update, {});
-        await Cart.findOneAndRemove({ orderBy: _id });
+        await Cart.findOneAndRemove({ orderBy: idUser });
         res.json({ message: "success" });
     } catch (error) {
         throw new Error(error);

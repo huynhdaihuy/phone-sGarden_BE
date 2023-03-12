@@ -23,8 +23,6 @@ db.mongoose
     });
 
 async function initial() {
-    // await MongoDB.connect('mongodb://localhost:27017/phone_Garden');
-    // console.log("Connected to the database!");
     Role.estimatedDocumentCount((err, count) => {
         if (!err && count === 0) {
             new Role({
@@ -57,18 +55,3 @@ async function initial() {
         }
     });
 }
-// Test
-// async function startServer() {
-//     try {
-//         await MongoDB.connect('mongodb://localhost:27017/phone_Garden');
-//         console.log("Connected to the database!");
-//         const PORT = config.app.port;
-//         app.listen(PORT, () => {
-//             console.log(`Server is running on port ${PORT}`);
-//         })
-//     } catch (error) {
-//         console.log("Cannot connect to the database!", error);
-//         process.exit();
-//     }
-// }
-// startServer();

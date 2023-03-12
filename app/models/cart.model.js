@@ -15,11 +15,16 @@ const Cart = new mongoose.model("Cart", mongoose.Schema({
         ref: "User",
     },
     isUsedCoupon: {
-        type: Boolean,
-        default: false
+        status: {
+            type: Boolean,
+            default: false
+        },
+        couponTnfo: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Coupon",
+            default: null
+        },
     }
-}, {
-    timestamps: true,
-}))
+}, { timestamps: true, }))
 
 module.exports = Cart

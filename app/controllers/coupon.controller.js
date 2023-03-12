@@ -99,14 +99,15 @@ exports.updateCoupon = async(req, res) => {
 exports.applyCoupon = async(req, res) => {
     try {
         const { code, idCart } = req.body;
+        console.log("🚀 ~ file: coupon.controller.js:102 ~ exports.applyCoupon=async ~ idCart:", idCart)
         const coupon = await Coupon.findOne({ code });
         const cart = await Cart.findOne({ _id: idCart });
 
         if (!coupon) {
             return res.status(404).send({ message: 'Coupon not found.' });
         }
-        if (cart.isUsedCoupon) {
-            return res.status(400).send({ message: 'Coupon is alredy used !' });
+        if (cart.isUsedCoupon.status) {
+            return res.status(400).send({ message: 'Coupon is already used !' });
         }
         if (coupon.quantity === 0) {
             return res.status(400).send({ message: 'Coupon is out of stock.' });
@@ -126,7 +127,8 @@ exports.applyCoupon = async(req, res) => {
         }
         coupon.quantity -= 1;
         cart.cartTotal -= discount;
-        cart.isUsedCoupon = true;
+        cart.isUsedCoupon.status = true;
+        cart.isUsedCoupon.couponTnfo = coupon._id;
         await cart.save();
         await coupon.save();
         res.status(200).send({ message: 'Coupon applied successfully.', discount });
