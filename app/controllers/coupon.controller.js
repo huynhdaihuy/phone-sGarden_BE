@@ -106,6 +106,9 @@ exports.applyCoupon = async(req, res) => {
         if (!coupon) {
             return res.status(404).send({ message: 'Coupon not found.' });
         }
+        if (cart.isUsedCoupon) {
+            return res.status(400).send({ message: 'Coupon is alredy used !' });
+        }
         if (coupon.quantity === 0) {
             return res.status(400).send({ message: 'Coupon is out of stock.' });
         }

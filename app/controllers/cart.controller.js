@@ -27,9 +27,12 @@ const addCart = asyncHandler(async(req, res) => {
             products.push(object);
         }
         let cartTotal = 0;
+
         for (let i = 0; i < products.length; i++) {
             cartTotal = cartTotal + products[i].price * products[i].count;
         }
+
+
         let newCart = await new Cart({
             products,
             cartTotal,

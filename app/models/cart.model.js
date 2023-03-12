@@ -14,6 +14,10 @@ const Cart = new mongoose.model("Cart", mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
+    isUsedCoupon: {
+        type: Boolean,
+        default: false
+    }
 }, {
     timestamps: true,
 }))
