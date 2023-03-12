@@ -35,7 +35,6 @@ exports.createCoupon = async(req, res) => {
 exports.getCoupons = async(req, res) => {
     try {
         const coupons = await Coupon.find();
-
         res.status(200).send(coupons);
     } catch (error) {
         console.log(error);
@@ -43,11 +42,11 @@ exports.getCoupons = async(req, res) => {
     }
 };
 
-exports.getCouponById = async(req, res) => {
+exports.getCouponByCode = async(req, res) => {
     try {
-        const { id } = req.params;
+        const { code } = req.query;
 
-        const coupon = await Coupon.findById(id);
+        const coupon = await Coupon.find(code);
 
         if (!coupon) {
             return res.status(404).send({ message: 'Coupon not found.' });
