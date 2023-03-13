@@ -1,12 +1,35 @@
 const asyncHandler = require("express-async-handler");
 const db = require("../models");
-
+const { uploadImages } = require("../controllers/upload.controller")
 const Product = db.product;
+
+const {
+    cloudinaryUploadImg,
+    cloudinaryDeleteImg,
+} = require("../utils/cloudinary");
 
 
 const createProduct = asyncHandler(async(req, res) => {
+    let uploader = (path) => cloudinaryUploadImg(path, "images");
+    const urlImg = [];
+    const files = req.files;
+    if (files.images.length) {
+        for (const file of files.images) {
+            const path = file.tempFilePath;
+            const newpath = await uploader(path);
+            urlImg.push(newpath);
+        }
+    } else {
+        const path = files.images.tempFilePath;
+        const newpath = await uploader(path);
+        urlImg.push(newpath);
+    }
+    console.log("🚀 ~ file: product.controller.js:26 ~ createProduct ~ urlImg:", urlImg[0].url)
+
+    const obj = req.body;
+    urlImg[0].url ? obj.images = urlImg[0].url : res.status(400).send("Cannot upload file images to cloud !");
     try {
-        const newProduct = await Product.create(req.body);
+        const newProduct = await Product.create(obj);
         res.json(newProduct);
     } catch (error) {
         throw new Error(error);
