@@ -24,10 +24,8 @@ const createProduct = asyncHandler(async(req, res) => {
         const newpath = await uploader(path);
         urlImg.push(newpath);
     }
-    console.log("🚀 ~ file: product.controller.js:26 ~ createProduct ~ urlImg:", urlImg[0].url)
-
     const obj = req.body;
-    urlImg[0].url ? obj.images = urlImg[0].url : res.status(400).send("Cannot upload file images to cloud !");
+    if (urlImg[0].url) { obj.images = urlImg[0].url }
     try {
         const newProduct = await Product.create(obj);
         res.json(newProduct);
