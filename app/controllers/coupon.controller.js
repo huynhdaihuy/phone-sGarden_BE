@@ -34,28 +34,14 @@ exports.createCoupon = async(req, res) => {
 
 exports.getCoupons = async(req, res) => {
     try {
-        const coupons = await Coupon.find();
-        res.status(200).send(coupons);
+        const queryObj = {...req.query };
+        let query = await Coupon.find(queryObj);
+        res.json(query);
     } catch (error) {
-        console.log(error);
-        res.status(500).send({ message: 'Internal server error occurred.' });
+        throw new Error(error);
     }
 };
 
-exports.getCouponByCode = async(req, res) => {
-    try {
-        const { code } = req.body;
-        const coupon = await Coupon.findOne({ code: code.toUpperCase() });
-        if (!coupon) {
-            return res.status(404).send({ message: 'Coupon not found.' });
-        }
-
-        res.status(200).send(coupon);
-    } catch (error) {
-        console.log(error);
-        res.status(500).send({ message: 'Internal server error occurred.' });
-    }
-};
 
 exports.updateCoupon = async(req, res) => {
     try {
