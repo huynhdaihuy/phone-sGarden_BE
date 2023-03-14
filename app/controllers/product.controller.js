@@ -10,31 +10,35 @@ const {
 
 
 const createProduct = asyncHandler(async(req, res) => {
-    let uploader = (path) => cloudinaryUploadImg(path, "images");
-    const urlImg = [];
-    const files = req.files;
-    if (files) {
-        if (files.images.length) {
-            for (const file of files.images) {
-                const path = file.tempFilePath;
+    try {
+        let uploader = (path) => cloudinaryUploadImg(path, "images");
+        const urlImg = [];
+        const files = req.files;
+        if (files) {
+            if (Array.isArray(files.images)) {
+                for (const file of files.images) {
+                    const path = file.tempFilePath;
+                    const newpath = await uploader(path);
+                    urlImg.push(newpath);
+                }
+            } else {
+                const path = files.images.tempFilePath;
                 const newpath = await uploader(path);
                 urlImg.push(newpath);
             }
-        } else {
-            const path = files.images.tempFilePath;
-            const newpath = await uploader(path);
-            urlImg.push(newpath);
         }
-    }
-    const obj = req.body;
-    if (urlImg.length > 0) { obj.images = urlImg[0].url }
-    try {
+        const obj = req.body;
+        if (urlImg.length > 0) {
+            obj.images = urlImg[0].url
+        }
         const newProduct = await Product.create(obj);
         res.json(newProduct);
     } catch (error) {
-        throw new Error(error);
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error occurred.' });
     }
 });
+
 
 const updateProduct = asyncHandler(async(req, res) => {
     const id = req.params;
