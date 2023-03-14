@@ -13,19 +13,21 @@ const createProduct = asyncHandler(async(req, res) => {
     let uploader = (path) => cloudinaryUploadImg(path, "images");
     const urlImg = [];
     const files = req.files;
-    if (files.images.length) {
-        for (const file of files.images) {
-            const path = file.tempFilePath;
+    if (files) {
+        if (files.images.length) {
+            for (const file of files.images) {
+                const path = file.tempFilePath;
+                const newpath = await uploader(path);
+                urlImg.push(newpath);
+            }
+        } else {
+            const path = files.images.tempFilePath;
             const newpath = await uploader(path);
             urlImg.push(newpath);
         }
-    } else {
-        const path = files.images.tempFilePath;
-        const newpath = await uploader(path);
-        urlImg.push(newpath);
     }
     const obj = req.body;
-    if (urlImg[0].url) { obj.images = urlImg[0].url }
+    if (urlImg.length > 0) { obj.images = urlImg[0].url }
     try {
         const newProduct = await Product.create(obj);
         res.json(newProduct);
