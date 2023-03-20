@@ -41,9 +41,9 @@ const createProduct = asyncHandler(async(req, res) => {
 
 
 const updateProduct = asyncHandler(async(req, res) => {
-    const id = req.params;
+    const { id } = req.params;
     try {
-        const updateProduct = await Product.findOneAndUpdate({ id }, req.body, {
+        const updateProduct = await Product.findByIdAndUpdate(id, req.body, {
             new: true,
         });
         res.json(updateProduct);
@@ -73,6 +73,7 @@ const getaProduct = asyncHandler(async(req, res) => {
 });
 
 const getAllProduct = asyncHandler(async(req, res) => {
+
     try {
         const queryObj = {...req.query };
         const excludeFields = ["page", "sort", "limit", "fields"];
