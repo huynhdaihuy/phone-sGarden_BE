@@ -5,6 +5,9 @@ const router = express.Router();
 
 router.get("/", controller.getAllUser);
 
+router.route('/avatar/:id')
+    .put(controller.uploadAvatar)
+
 router.route('/:id')
     .get(controller.findOne)
     .put(controller.update)

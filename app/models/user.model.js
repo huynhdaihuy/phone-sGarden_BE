@@ -38,6 +38,10 @@ const User = mongoose.model(
             type: String,
             maxLength: 200
         },
+        avatar: {
+            type: String,
+            default: null
+        },
         roles: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Role"
