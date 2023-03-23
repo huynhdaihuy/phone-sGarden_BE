@@ -2,6 +2,10 @@ const asyncHandler = require("express-async-handler");
 const { ObjectId } = require("mongodb");
 const db = require("../models");
 const User = db.user;
+var bcrypt = require("bcryptjs");
+var nodemailer = require("nodemailer");
+
+
 const {
     cloudinaryUploadImg,
     cloudinaryDeleteImg,
@@ -86,3 +90,44 @@ exports.delete = asyncHandler(async(req, res) => {
             throw new Error(error);
         }
 });
+
+exports.forgotPassword = async(req, res) => {
+    if (!ObjectId.isValid(req.params.id))
+        res.send("Invalid Id!");
+    const { id } = req.params
+    const { email } = req.body
+
+    const user = await User.findOne({ email });
+    if (!user || user._id != id)
+        return res.status(400).json({ error: 'User with that email does not exist ' });
+    const newPassword = Math.random().toString(36).slice(-8);
+    const password = bcrypt.hashSync(newPassword, 8);
+    const userUpdated = await User.findByIdAndUpdate(id, { password }, { new: true });
+    if (!userUpdated)
+        return res.status(500).json({ error: 'User can not update!' });
+
+    let configMail = {
+        service: 'gmail.com',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        },
+
+    }
+    const transport = nodemailer.createTransport(configMail);
+
+    const mailOptions = {
+        from: 'Blackism <huynhdaihuybank6@gmail.com>',
+        to: email,
+        subject: 'Reset Password',
+        text: `Your new password is: ${newPassword}`
+    };
+
+    transport.sendMail(mailOptions, (err, info) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to send email' });
+        }
+
+        res.status(200).json({ message: 'Password reset successful. Check your email for the new password.' });
+    });
+}
