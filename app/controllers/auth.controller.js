@@ -109,3 +109,66 @@ exports.signin = (req, res) => {
             });
         });
 };
+
+exports.signinAdmin = (req, res) => {
+
+    User.findOne({
+            username: req.body.username
+        })
+        .populate("roles", "-__v")
+        .exec((err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+
+            if (!user) {
+                return res.status(404).send({ message: "User Not found." });
+            }
+
+            var passwordIsValid = bcrypt.compareSync(
+                req.body.password,
+                user.password
+            );
+            console.log("🚀 ~ file: auth.controller.js:134 ~ .exec ~ passwordIsValid:", passwordIsValid)
+            console.log("🚀 ~ file: auth.controller.js:172 ~ .exec ~ user.password:", user.password)
+            console.log("🚀 ~ file: auth.controller.js:174 ~ .exec ~ req.body.password:", req.body.password)
+
+            if (!passwordIsValid) {
+                return res.status(401).send({
+                    accessToken: null,
+                    message: "Invalid Password!"
+                });
+            }
+            Role.find({
+                    _id: { $in: user.roles }
+                },
+                (err, roles) => {
+                    if (err) {
+                        res.status(500).send({ message: err });
+                        return;
+                    }
+
+                    for (let i = 0; i < roles.length; i++) {
+                        if (roles[i].name === "admin") {
+                            var token = jwt.sign({ id: user.id }, config.secretKey, {
+                                expiresIn: 86400 // 24 hours
+                            });
+                            res.set({
+                                "x-access-token": token,
+                            });
+
+                            res.status(200).send({
+                                user
+                            });
+                            return;
+                        }
+                    }
+
+                    res.status(403).send({ message: "Require Admin Role!" });
+                    return;
+                }
+            );
+
+        });
+};
