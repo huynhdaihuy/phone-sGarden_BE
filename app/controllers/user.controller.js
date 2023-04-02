@@ -29,7 +29,8 @@ exports.moderatorBoard = (req, res) => {
 
 exports.getAllUser = asyncHandler(async(req, res) => {
     try {
-        const users = await User.find();
+        const queryObj = {...req.query };
+        let users = await User.find(queryObj);
         res.json(users);
     } catch (error) {
         throw new Error(error);

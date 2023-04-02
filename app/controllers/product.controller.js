@@ -73,7 +73,6 @@ const getaProduct = asyncHandler(async(req, res) => {
 });
 
 const getAllProduct = asyncHandler(async(req, res) => {
-
     try {
         const queryObj = {...req.query };
         const excludeFields = ["page", "sort", "limit", "fields"];
@@ -87,6 +86,8 @@ const getAllProduct = asyncHandler(async(req, res) => {
         queryStr = queryStr.replace(/\b(regex)\b/g, (match) => {
             return `$${match}`
         })
+        const test = JSON.parse(queryStr);
+        console.log("🚀 ~ file: product.controller.js:91 ~ getAllProduct ~ test:", test)
         let query = Product.find(JSON.parse(queryStr));
 
         if (req.query.sort) {

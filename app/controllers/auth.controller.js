@@ -130,9 +130,6 @@ exports.signinAdmin = (req, res) => {
                 req.body.password,
                 user.password
             );
-            console.log("🚀 ~ file: auth.controller.js:134 ~ .exec ~ passwordIsValid:", passwordIsValid)
-            console.log("🚀 ~ file: auth.controller.js:172 ~ .exec ~ user.password:", user.password)
-            console.log("🚀 ~ file: auth.controller.js:174 ~ .exec ~ req.body.password:", req.body.password)
 
             if (!passwordIsValid) {
                 return res.status(401).send({
