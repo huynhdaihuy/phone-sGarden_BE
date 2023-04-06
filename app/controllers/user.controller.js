@@ -30,7 +30,11 @@ exports.moderatorBoard = (req, res) => {
 exports.getAllUser = asyncHandler(async(req, res) => {
     try {
         const queryObj = {...req.query };
-        let users = await User.find(queryObj);
+        let queryStr = JSON.stringify(queryObj);
+        queryStr = queryStr.replace(/\b(regex)\b/g, (match) => {
+            return `$${match}`
+        })
+        let users = await User.find(JSON.parse(queryStr));
         res.json(users);
     } catch (error) {
         throw new Error(error);

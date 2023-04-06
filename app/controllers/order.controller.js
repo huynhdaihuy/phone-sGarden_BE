@@ -127,6 +127,7 @@ const getBestSellingProduct = asyncHandler(async(req, res) => {
         .slice(0, 10);
 
     console.log(bestSellingProducts);
+    res.send(bestSellingProducts)
 });
 module.exports = {
     createOrder,
