@@ -5,11 +5,13 @@ const {
     createOrder,
     getOdrerByID,
     updateOrderStatus,
-    getUserAllOdrer
+    getUserAllOdrer,
+    getBestSellingProduct
 } = require("../controllers/order.controller");
-const { user } = require("../models");
 
 router.get("/", getAllOrders);
+
+router.get("/best-selling-product", getBestSellingProduct);
 
 router.post("/", createOrder);
 

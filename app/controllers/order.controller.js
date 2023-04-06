@@ -3,7 +3,6 @@ const asyncHandler = require("express-async-handler");
 const { ObjectId } = require("mongodb");
 
 const Cart = db.cart;
-const User = db.user;
 const Product = db.product;
 const Order = db.order;
 
@@ -109,10 +108,31 @@ const updateOrderStatus = asyncHandler(async(req, res) => {
         throw new Error(error);
     }
 });
+const getBestSellingProduct = asyncHandler(async(req, res) => {
+    const orders = await Order.find({ status: 'Delivered' });
+    const products = {};
+
+    orders.forEach(order => {
+        order.products.forEach(item => {
+            if (item.product.toString() in products) {
+                products[item.product.toString()] += item.count;
+            } else {
+                products[item.product.toString()] = item.count;
+            }
+        });
+    });
+
+    const bestSellingProducts = Object.keys(products)
+        .sort((a, b) => products[b] - products[a])
+        .slice(0, 10);
+
+    console.log(bestSellingProducts);
+});
 module.exports = {
     createOrder,
     getOdrerByID,
     getAllOrders,
     updateOrderStatus,
-    getUserAllOdrer
+    getUserAllOdrer,
+    getBestSellingProduct
 }

@@ -8,7 +8,7 @@ router.get("/", controller.getAllUser);
 router.route('/avatar/:id')
     .put(controller.uploadAvatar)
 
-router.route('/forgot-password/:id')
+router.route('/forgot-password/')
     .post(controller.forgotPassword)
 router.route('/:id')
     .get(controller.findOne)

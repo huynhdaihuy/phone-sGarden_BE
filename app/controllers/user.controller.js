@@ -93,17 +93,14 @@ exports.delete = asyncHandler(async(req, res) => {
 });
 
 exports.forgotPassword = async(req, res) => {
-    if (!ObjectId.isValid(req.params.id))
-        res.send("Invalid Id!");
-    const { id } = req.params
-    const { email } = req.body
-
-    const user = await User.findOne({ email });
-    if (!user || user._id != id)
-        return res.status(400).json({ error: 'User with that email does not exist ' });
+    const { email, username } = req.body;
+    const user = await User.findOne({ email, username });
+    if (!user) {
+        return res.status(400).json({ error: 'User with that email and username does not exist' });
+    }
     const newPassword = Math.random().toString(36).slice(-8);
     const password = bcrypt.hashSync(newPassword, 8);
-    const userUpdated = await User.findByIdAndUpdate(id, { password }, { new: true });
+    const userUpdated = await User.findOneAndUpdate({ email, username }, { password }, { new: true });
     if (!userUpdated)
         return res.status(500).json({ error: 'User can not update!' });
 
