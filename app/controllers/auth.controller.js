@@ -156,7 +156,8 @@ exports.signinAdmin = (req, res) => {
                             });
 
                             res.status(200).send({
-                                user
+                                user,
+                                accessToken: token
                             });
                             return;
                         }
