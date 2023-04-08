@@ -54,11 +54,13 @@ exports.findOne = asyncHandler(async(req, res) => {
 });
 
 exports.update = asyncHandler(async(req, res) => {
-    if (!ObjectId.isValid(req.params.id))
-        res.send("Invalid Id!");
-    else
+    if (!ObjectId.isValid(req.params.id)) {
+        res.status(400).send("Invalid Id!");
+        return;
+    } else
         try {
-            const users = await User.findOneAndUpdate({ _id: req.params.id }, req.body, { returnDocument: "after" });
+            const users = await User.findOneAndUpdate({ _id: req.params.id }, req.query, { returnDocument: "after", new: true });
+            console.log("🚀 ~ file: user.controller.js:63 ~ exports.update=asyncHandler ~ users:", users)
             res.json(users);
         } catch (error) {
             throw new Error(error);
@@ -95,7 +97,25 @@ exports.delete = asyncHandler(async(req, res) => {
             throw new Error(error);
         }
 });
+exports.changePassword = async(req, res) => {
+    const { id } = req.params;
+    const { currentPassword, newPassword } = req.body;
 
+    try {
+        const user = await User.findById(id);
+        const isMatch = await user.comparePassword(currentPassword);
+
+        if (!isMatch) {
+            return res.status(401).send({ message: 'Current password is incorrect' });
+        }
+        user.password = newPassword;
+        await user.save()
+        res.status(200).send({ message: 'Password changed successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'An error occurred while changing the password' });
+    }
+}
 exports.forgotPassword = async(req, res) => {
     const { email, username } = req.body;
     const user = await User.findOne({ email, username });

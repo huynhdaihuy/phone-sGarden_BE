@@ -10,6 +10,9 @@ router.route('/avatar/:id')
 
 router.route('/forgot-password/')
     .post(controller.forgotPassword)
+
+router.put('/:id/password', controller.changePassword);
+
 router.route('/:id')
     .get(controller.findOne)
     .put(controller.update)
