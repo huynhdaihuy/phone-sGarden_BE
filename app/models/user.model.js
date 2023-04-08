@@ -19,8 +19,7 @@ const User = mongoose.model(
         name: {
             type: String,
             required: [true, 'User"s name required'],
-            maxLength: 30
-
+            maxLength: 30,
         },
         phone: {
             type: String,
