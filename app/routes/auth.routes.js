@@ -3,7 +3,7 @@ const authController = require("../controllers/auth.controller");
 const { isAdmin } = require('../middleware/authJwt')
 const express = require('express');
 const router = express.Router();
-
+const { validateToken, verifyToken } = require('../middleware/authJwt')
 router.route(
     "/signup"
 ).post([
@@ -19,6 +19,8 @@ router.route("/signin").post((req, res, next) => {
     );
     next();
 }, authController.signin);
+
+router.route("/check-token").get([verifyToken, validateToken]);
 
 router.route("/signin-admin/").post((req, res, next) => {
     res.set(

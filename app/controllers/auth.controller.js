@@ -66,7 +66,7 @@ exports.signin = (req, res) => {
             username: req.body.username
         })
         .populate("roles", "-__v")
-        .exec((err, user) => {
+        .exec(async(err, user) => {
             if (err) {
                 res.status(500).send({ message: err });
                 return;
@@ -88,8 +88,17 @@ exports.signin = (req, res) => {
                 });
             }
             var token = jwt.sign({ id: user.id }, config.secretKey, {
-                expiresIn: 86400 // 24 hours
+                expiresIn: config.jwt.accessExpiresIn
             });
+            // Generate refresh token
+            const refreshToken = jwt.sign({ id: user.id },
+                config.jwt.refreshSecret, { expiresIn: config.jwt.refreshExpiresIn }
+            );
+
+            // Store the refresh token in user's record
+            user.refreshToken = refreshToken;
+            await user.save();
+
             res.set({
                 "x-access-token": token,
             });

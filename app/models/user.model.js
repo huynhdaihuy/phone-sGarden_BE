@@ -43,6 +43,10 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Role',
     }],
+    refreshToken: {
+        type: String,
+        default: null,
+    }
 }, { timestamps: true });
 UserSchema.methods.comparePassword = async function(password) {
     try {
