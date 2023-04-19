@@ -73,8 +73,7 @@ const getAllOrders = asyncHandler(async(req, res) => {
         let queryStr = JSON.stringify(queryObj);
         queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
         const test = JSON.parse(queryStr);
-        console.log("🚀 ~ file: product.controller.js:91 ~ getAllProduct ~ test:", test)
-        let query = Order.find(JSON.parse(queryStr));
+        let query = Order.find(JSON.parse(queryStr)).populate('orderBy');
         const order = await query;
         res.json(order);
     } catch (error) {
