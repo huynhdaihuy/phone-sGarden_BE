@@ -7,7 +7,6 @@ const ApiError = require('./app/api-error');
 const app = express();
 
 const productRouter = require('./app/routes/product.route');
-const newsRouter = require('./app/routes/news.route');
 const authRouter = require('./app/routes/auth.routes');
 const userRouter = require('./app/routes/user.routes');
 const cartRouter = require('./app/routes/cart.route');
@@ -58,7 +57,6 @@ app.use('/api/order', orderRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/products', productRouter);
-app.use('/api/news', newsRouter);
 
 
 

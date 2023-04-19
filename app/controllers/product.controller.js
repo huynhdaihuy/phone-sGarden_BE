@@ -54,10 +54,8 @@ const updateProduct = asyncHandler(async(req, res) => {
 
 const deleteProduct = asyncHandler(async(req, res) => {
     const { id } = req.params;
-    console.log("🚀 ~ file: product.controller.js:57 ~ deleteProduct ~ id:", id)
     try {
         const deleteProduct = await Product.findOneAndDelete({ _id: id });
-        console.log("🚀 ~ file: product.controller.js:59 ~ deleteProduct ~ deleteProduct:", deleteProduct)
         res.json(deleteProduct);
     } catch (error) {
         throw new Error(error);
