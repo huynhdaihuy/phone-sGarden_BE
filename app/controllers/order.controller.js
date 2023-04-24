@@ -61,7 +61,6 @@ const getOdrerByID = asyncHandler(async(req, res) => {
             .populate("orderBy")
             .populate("paymentIntent.couponUsed")
             .exec();
-        console.log("🚀 ~ file: order.controller.js:64 ~ getOdrerByID ~ userorders:", userorders)
         res.json(userorders);
     } catch (error) {
         throw new Error(error);
@@ -86,11 +85,13 @@ const getAllOrders = asyncHandler(async(req, res) => {
 
 const getUserAllOdrer = asyncHandler(async(req, res) => {
     const { id } = req.params;
+    console.log("🚀 ~ file: order.controller.js:89 ~ getUserAllOdrer ~ id:", id)
     if (!ObjectId.isValid(id)) throw new Error("Invalid id!");
     try {
         const allUserOrders = await Order.find({ orderBy: id })
             .populate("products.product")
             .populate("orderBy")
+            .populate("paymentIntent.couponUsed")
             .exec();
         res.json(allUserOrders);
     } catch (error) {
